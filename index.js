@@ -3,9 +3,11 @@ const app=express();
 const port=8080;
 const path=require("path");
 const{v4:uuidv4}=require("uuid");
+const methodOverride=require("method-override");
 
 app.use(express.urlencoded({extended :true}));
 app.use(express.json());
+app.use(methodOverride("_method"));
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -14,18 +16,18 @@ app.use(express.static(path.join(__dirname,"public")));
 let posts=[
     {
         id:uuidv4(),
-        username:"apnacollege",
-        content:"I love coding"
+        username:"S.Adam",
+        content:"How I Landed My First Internship in Tech",
     },
     {
         id:uuidv4(),
-        username:"smita",
-        content:"Hard work is important to get the success"
+        username:"Steve",
+        content:"Is social media bringing us closer or pulling us apart?"
     },
     {
         id:uuidv4(),
-        username:"nikhilyadav",
-        content:"I got selected for the mbms"
+        username:"Joe",
+        content:"5 Habits That Will Change Your Life in 6 Months"
     }
 ]
 
@@ -47,9 +49,6 @@ app.post("/posts",(req,res)=>{
 app.get("/posts/:id",(req,res)=>{
     let  {id} =req.params;
     let post=posts.find((p)=> p.id === id);
-    if (!post) {
-        return res.status(404).send("Post not found");
-    }
     res.render("show.ejs",{post})
 })
 
@@ -59,7 +58,20 @@ app.patch("/posts/:id",(req,res)=>{
     let post=posts.find((p)=>p.id===id);
     post.content=Newcontent;
     console.log(post);
-    res.send("patch  is working ");
+    res.redirect("/posts");
+})
+
+app.get("/posts/:id/edit",(req,res)=>{
+    let {id}=req.params;
+    let post=posts.find((p)=>p.id===id);
+    console.log(post);
+    res.render("edit.ejs",{post});
+})
+
+app.delete("/posts/:id",(req,res)=>{
+    let {id} =req.params;
+    posts=posts.filter((p)=> p.id != id);
+    res.redirect("/posts");
 })
 app.listen(port,(req,res)=>{
     console.log(`Server is running on port ${port}`);

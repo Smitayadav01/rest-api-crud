@@ -3,7 +3,20 @@ h1{
 }
 .post{
     background-color: blanchedalmond;
+    box-shadow: 2px 2px 7px rgb(65, 55, 55);
 }
 .user{
     font-style: italic;
+}
+a{
+    margin-right:50px;
+    font-size: large;
+    text-decoration: none;
+}
+button{
+    background-color: aliceblue;
+    color: black;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 4px;
 }
